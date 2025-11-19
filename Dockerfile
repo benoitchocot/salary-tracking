@@ -1,7 +1,6 @@
 # Build stage
 FROM node:20-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
 # Copy package files
@@ -13,23 +12,26 @@ RUN npm ci
 # Copy all project files
 COPY . .
 
-# Build the application (generates static files for SPA)
-RUN npm run generate
+# Build the application
+RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM node:20-alpine
 
-# Remove default nginx config
-RUN rm /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy package files and install production dependencies only
+COPY package*.json ./
+RUN npm ci --production
 
 # Copy built application from builder stage
-COPY --from=builder /app/.output/public /usr/share/nginx/html
+COPY --from=builder /app/.output ./.output
 
-# Expose port 80
-EXPOSE 80
+# Expose port 3000 (Nuxt default)
+EXPOSE 3000
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Set environment to production
+ENV NODE_ENV=production
+
+# Start the Nuxt server
+CMD ["node", ".output/server/index.mjs"]
