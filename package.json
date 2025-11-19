@@ -1,0 +1,30 @@
+{
+  "name": "salaires-antigravity",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "build:web": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "sync:mobile": "npx cap sync",
+    "build:mobile": "npm run generate && npm run sync:mobile",
+    "open:ios": "npx cap open ios",
+    "open:android": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
+    "@nuxt/ui": "^3.0.0",
+    "nuxt": "^3.14.0",
+    "vue": "latest"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0",
+    "typescript": "^5.6.0"
+  }
+}
